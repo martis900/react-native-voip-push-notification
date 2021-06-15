@@ -17,6 +17,8 @@ const RNVoipPushRemoteNotificationReceivedEvent = "RNVoipPushRemoteNotificationR
 const RNVoipPushDidLoadWithEvents = "RNVoipPushDidLoadWithEvents"; // --- 'didLoadWithEvents'
 
 export default class RNVoipPushNotification {
+    
+    static wakeupByPush = (Platform.OS == 'ios' && RNVoipPushNotificationManager.wakeupByPush === 'true');
 
     static get RNVoipPushRemoteNotificationsRegisteredEvent() {
         return RNVoipPushRemoteNotificationsRegisteredEvent;
