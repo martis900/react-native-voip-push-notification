@@ -60,6 +60,32 @@ static NSMutableDictionary<NSString *, RNVoipPushNotificationCompletion> *comple
     return sharedVoipPushManager;
 }
 
+static NSString *RCTCurrentAppBackgroundState()
+{
+    static NSDictionary *states;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        states = @{
+            @(UIApplicationStateActive): @"active",
+            @(UIApplicationStateBackground): @"background",
+            @(UIApplicationStateInactive): @"inactive"
+        };
+    });
+
+    if (RCTRunningInAppExtension()) {
+        return @"extension";
+    }
+
+    return states[@(RCTSharedApplication().applicationState)] ? : @"unknown";
+}
+
+- (NSDictionary<NSString *, id> *)constantsToExport
+{
+    NSString *currentState = RCTCurrentAppBackgroundState();
+    NSLog(@"[RNVoipPushNotificationManager] constantsToExport currentState = %@", currentState);
+    return @{@"wakeupByPush": (currentState == @"background") ? @"true" : @"false"};
+}
+
 // --- clean observer and completionHandlers when app close
 - (void)dealloc
 {
