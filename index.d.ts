@@ -9,5 +9,6 @@ declare module 'react-native-voip-push-notification' {
         static registerVoipToken(): void;
         static onVoipNotificationCompleted(uuid: string): void;
         static removeEventListener(type: Events): void
+        statis wakeupByPush: string;
     }
 }
